@@ -1,0 +1,4 @@
+.github_token
+__pycache__/
+*.log
+*.tmp

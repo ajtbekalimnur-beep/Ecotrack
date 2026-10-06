@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>EcoTrack — Zhezkazgan Pilot</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f5f7f6;--card:#fff;--tx:#14231f;--mu:#5d6e68;--bd:#dde5e1;--pr:#0f6b5a;--prt:#e3f2ee;--red:#c8372d;--amb:#d99200;--grn:#1f9d55;--org:#e07b1a}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0e1614;--card:#16211e;--tx:#e8f0ed;--mu:#93a5a0;--bd:#26352f;--pr:#3fbf9f;--prt:#183029}}
+:root[data-theme=dark]{--bg:#0e1614;--card:#16211e;--tx:#e8f0ed;--mu:#93a5a0;--bd:#26352f;--pr:#3fbf9f;--prt:#183029}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+h1,h2,h3{line-height:1.2;margin:0 0 .5em}h1{font-size:clamp(28px,5vw,46px);letter-spacing:-.02em}
+a{color:var(--pr)}button,select,input,textarea{font:inherit;color:inherit}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--card);border-bottom:1px solid var(--bd);display:flex;gap:8px;align-items:center;padding:10px 16px;flex-wrap:wrap}
+.logo{font-weight:700;font-size:18px;cursor:pointer;display:flex;align-items:center;gap:8px}.logo i{width:22px;height:22px;border-radius:6px;background:var(--pr);display:inline-block;position:relative}.logo i:after{content:"";position:absolute;inset:6px;border:2px solid #fff;border-radius:50%}
+nav{display:flex;gap:2px;flex:1;flex-wrap:wrap}nav a{padding:6px 10px;border-radius:8px;text-decoration:none;color:var(--mu);font-weight:500}nav a.on{background:var(--prt);color:var(--pr)}
+.seg{display:flex;border:1px solid var(--bd);border-radius:10px;overflow:hidden}.seg button{border:0;background:none;padding:6px 12px;cursor:pointer;color:var(--mu)}.seg button.on{background:var(--pr);color:#fff}
+main{max-width:1080px;margin:0 auto;padding:20px 16px 60px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px}
+.grid{display:grid;gap:12px}.g4{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.btn{background:var(--pr);color:#fff;border:0;padding:10px 18px;border-radius:10px;font-weight:600;cursor:pointer}.btn.s{background:var(--prt);color:var(--pr)}.btn.d{background:var(--red)}.btn:disabled{opacity:.5}
+.stat b{font-size:28px;display:block}.stat span{color:var(--mu);font-size:13px}
+.badge{display:inline-block;padding:2px 9px;border-radius:99px;font-size:12px;font-weight:600;color:#fff;white-space:nowrap}
+.hero{padding:40px 0 24px}.hero p{font-size:18px;color:var(--mu);max-width:640px}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:20px 0;font-size:12px;font-weight:700;letter-spacing:.04em}.flow span{background:var(--prt);color:var(--pr);padding:8px 12px;border-radius:8px}.flow em{color:var(--mu);font-style:normal}
+table{width:100%;border-collapse:collapse}th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--bd);font-size:14px}th{color:var(--mu);font-size:12px;text-transform:uppercase}
+.tw{overflow-x:auto}tr.k{cursor:pointer}tr.k:hover{background:var(--prt)}
+label{display:block;font-weight:600;margin:12px 0 4px}input[type=text],textarea,select{width:100%;padding:9px;border:1px solid var(--bd);border-radius:9px;background:var(--bg)}
+.map{width:100%;border-radius:14px;border:1px solid var(--bd);background:#e8eee9;display:block}
+.pop{position:absolute;left:12px;bottom:12px;max-width:290px}.mw{position:relative}
+.tl{list-style:none;padding:0;margin:0}.tl li{padding:0 0 14px 26px;position:relative;color:var(--mu)}.tl li:before{content:"";position:absolute;left:5px;top:5px;width:10px;height:10px;border-radius:50%;background:var(--bd)}.tl li:after{content:"";position:absolute;left:9px;top:16px;bottom:-4px;width:2px;background:var(--bd)}.tl li:last-child:after{display:none}.tl li.d{color:var(--tx)}.tl li.d:before{background:var(--grn)}.tl small{display:block;color:var(--mu)}
+.ba{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ba img,.ph{width:100%;border-radius:10px;aspect-ratio:4/3;object-fit:cover;display:block}.ba b{font-size:12px;color:var(--mu)}
+.bar{height:10px;border-radius:5px;background:var(--pr);margin:3px 0 10px}.note{font-size:12px;color:var(--mu)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--tx);color:var(--bg);padding:10px 18px;border-radius:10px;z-index:20}
+.ai{border-left:4px solid var(--pr);background:var(--prt)}.sp{width:34px;height:34px;border:4px solid var(--bd);border-top-color:var(--pr);border-radius:50%;animation:r 1s linear infinite;margin:20px auto}@keyframes r{to{transform:rotate(360deg)}}
+</style></head><body>
+<header><div class="logo" onclick="go('/')"><i></i>EcoTrack <span class="note">Zhezkazgan Pilot</span></div><nav id="nav"></nav>
+<div class="seg" id="seg"></div></header>
+<main id="app"></main><div id="tt"></div>
+<script>
+// ---- Config: category → department mapping (configurable, not hardcoded in UI) ----
+const DEPTS={waste:'Waste Management',road:'Road Maintenance',light:'Electricity / Street Lighting',water:'Water Services',env:'Environmental Department',muni:'Municipal Services'};
+const CATS={illegal_waste:{l:'Illegal Waste',d:'waste',p:'HIGH',desc:'Large accumulation of waste visible near a public road.',c:'#7a5c3a'},
+ bin:{l:'Overflowing Bin',d:'waste',p:'MEDIUM',desc:'Waste container appears full with waste around it.',c:'#6b6b4a'},
+ road:{l:'Damaged Road',d:'road',p:'HIGH',desc:'Visible damage to the road surface.',c:'#555a60'},
+ light:{l:'Broken Street Light',d:'light',p:'MEDIUM',desc:'Street light appears inoperative or damaged.',c:'#3a4560'},
+ water:{l:'Water Issue',d:'water',p:'HIGH',desc:'Visible water leak or pooling on a public surface.',c:'#2f6f8f'},
+ smoke:{l:'Smoke / Emissions',d:'env',p:'HIGH',desc:'Visible smoke or emissions; requires on-site inspection.',c:'#6a6a6a'},
+ facility:{l:'Damaged Facility',d:'muni',p:'LOW',desc:'Public facility appears damaged.',c:'#6a4a5a'}};
+const ST={NEW:['New','#c8372d'],REVIEW:['Under Review','#8a5cc2'],ASSIGNED:['Assigned','#d99200'],PROGRESS:['In Progress','#d99200'],VERIFY:['Verification Required','#2f6fbf'],RESOLVED:['Resolved ✓ Verified','#1f9d55'],CLOSED:['Closed – not confirmed','#5d6e68'],REOPENED:['Reopened','#c8372d']};
+const mc=s=>({NEW:'#c8372d',REOPENED:'#c8372d',REVIEW:'#c8372d',ASSIGNED:'#d99200',PROGRESS:'#d99200',VERIFY:'#d99200',RESOLVED:'#1f9d55',CLOSED:'#5d6e68'}[s]);
+const STREETS=[['Abay St.',120,130],['Zhezkazgan Ave.',300,230],['Mira St.',470,120],['Alasha Khan Ave.',620,300],['Gagarin St.',200,350],['Satpayev St.',540,420],['Kengir Embankment',700,150]];
+// ---- Mock service layer (swap for Gemini/Supabase later) ----
+const ago=h=>Date.now()-h*36e5;
+function ph(cat,after){const c=after?'#8fc9a3':CATS[cat].c;return 'data:image/svg+xml,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300"><rect width="400" height="300" fill="${c}"/><rect y="200" width="400" height="100" fill="${after?'#6fae86':'#00000033'}"/><text x="200" y="150" text-anchor="middle" font-family="sans-serif" font-size="22" fill="#fff" opacity=".85">${after?'AFTER — cleared':'DEMO PHOTO'}</text><text x="200" y="180" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#fff" opacity=".7">${CATS[cat].l}</text></svg>`)}
+const H=(...a)=>a.map(([k,h,n])=>({k,t:ago(h),n}));
+const base=['NEW','NEW','NEW','NEW','ASSIGNED','PROGRESS','PROGRESS','PROGRESS','VERIFY','VERIFY','RESOLVED','RESOLVED','RESOLVED','RESOLVED','RESOLVED','REOPENED'];
+const keys=Object.keys(CATS);
+let R=base.map((s,i)=>{const cat=keys[i%keys.length],st=STREETS[i%STREETS.length],h=3+i*7;
+ const hist=[['rep',h],['ai',h-.01],['asg',h-.02]];if(!['NEW'].includes(s))hist.push(['acc',h-1]);if(['PROGRESS','VERIFY','RESOLVED','REOPENED'].includes(s))hist.push(['wrk',h-2]);if(['VERIFY','RESOLVED','REOPENED'].includes(s))hist.push(['res',h-4]);if(s=='RESOLVED')hist.push(['ver',h-5]);if(s=='REOPENED')hist.push(['reo',h-6]);
+ return{id:1027+i,cat,title:CATS[cat].l+' near '+st[0],street:st[0],x:st[1]+(i*37%70)-30,y:st[2]+(i*53%60)-25,pri:CATS[cat].p,status:s,dept:CATS[cat].d,conf:+(.82+(i%9)/50).toFixed(2),desc:'Reported by a resident (demo data).',before:ph(cat),after:['VERIFY','RESOLVED','REOPENED'].includes(s)?ph(cat,1):null,note:['VERIFY','RESOLVED','REOPENED'].includes(s)?'Issue addressed and the area restored.':'',hist:hist.map(([k,x])=>({k,t:ago(Math.max(x,.1))})),mine:i%3==0,notes:[],sup:i%4}});
+R.reverse();let nid=1050;
+let M=[['road','🚧 Road repair',STREETS[0],'Road Maintenance','Today, 14:20'],['water','🚰 Temporary water shutdown',STREETS[3],'Water Services','Tomorrow 09:00–15:00'],['light','⚡ Street lighting maintenance',STREETS[4],'Electricity / Street Lighting','Today, 18:00'],['muni','🌳 Tree planting',STREETS[6],'Municipal Services','Saturday 10:00']].map((m,i)=>({id:i,t:m[1],x:m[2][1]+25,y:m[2][2]+45,s:m[2][0],d:m[3],w:m[4]}));
+const aiAnalyze=(txt,hint)=>new Promise(r=>setTimeout(()=>{let k=hint||'illegal_waste';const t=(txt||'').toLowerCase();if(!hint){if(/road|pothole|асфальт|дорог/.test(t))k='road';else if(/light|lamp|свет|фонар/.test(t))k='light';else if(/water|leak|pipe|вод/.test(t))k='water';else if(/smoke|дым|emission/.test(t))k='smoke';else if(/bin|container|контейнер/.test(t))k='bin'}
+ r({cat:k,pri:CATS[k].p.toLowerCase(),dept:CATS[k].d,desc:CATS[k].desc,conf:(hint||k!='illegal_waste'||/waste|garbage|trash|мусор/.test(t))?+(0.88+Math.random()*.08).toFixed(2):0.58})},1400));
+// ---- State & helpers ----
+let role=sessionStorage.getItem('role')||'citizen',gdept='all',draft=null,sel=null,flt='all';
+const $=s=>document.querySelector(s),app=$('#app');
+const fmt=t=>new Date(t).toLocaleString('en-GB',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+const rel=t=>{const h=(Date.now()-t)/36e5;return h<1?Math.round(h*60)+'m ago':h<24?Math.round(h)+'h ago':Math.round(h/24)+'d ago'};
+const badge=s=>`<span class="badge" style="background:${ST[s][1]}">${ST[s][0]}</span>`;
+const pb=p=>`<span class="badge" style="background:${p=='HIGH'?'#c8372d':p=='MEDIUM'?'#d99200':'#5d6e68'}">${p}</span>`;
+const toast=m=>{const e=$('#tt');e.innerHTML=`<div class="toast">${m}</div>`;setTimeout(()=>e.innerHTML='',2600)};
+const go=p=>{location.hash=p};const gov=()=>role=='gov';
+function push(r,k,n){r.hist.push({k,t:Date.now(),n})}
+const SLA={HIGH:24,MEDIUM:72,LOW:120},due=r=>r.hist[0].t+SLA[r.pri]*36e5,open=r=>!['RESOLVED','VERIFY','CLOSED'].includes(r.status),over=r=>open(r)&&Date.now()>due(r),slaTxt=r=>!open(r)?'—':over(r)?'<b style="color:var(--red)">Overdue</b>':Math.round((due(r)-Date.now())/36e5)+'h left';
+const ovrSel=r=>(r.status=='NEW'||r.status=='REVIEW')?`<label>Override AI category (logged in audit)</label><select onchange="ovr(${r.id},this.value)">${keys.map(k=>`<option value="${k}" ${k==r.cat?'selected':''}>${CATS[k].l}</option>`).join('')}</select><p></p>`:'';
+function ovr(id,v){const r=R.find(x=>x.id==id);r.notes.push('AUDIT: AI category '+CATS[r.cat].l+' → '+CATS[v].l);r.cat=v;r.dept=CATS[v].d;r.pri=CATS[v].p;r.title=CATS[v].l+' near '+r.street;if(r.status=='REVIEW')r.status='NEW';toast('Reclassified & re-routed to '+DEPTS[r.dept]);render()}
+function supp(id){const r=R.find(x=>x.id==id);r.sup=(r.sup||0)+1;draft=null;toast('Added — you are now counted on report #'+id);go('/r/'+id)}
+function dupHtml(){const a=draft.res,s=STREETS[draft.loc],d=R.find(r=>r.cat==a.cat&&r.street==s[0]&&open(r));return (a.conf<.7?'<p><b>Low confidence ('+Math.round(a.conf*100)+'%).</b> Pick the right category above — otherwise this goes to manual triage.</p>':'')+(d?`<div class="card" style="margin:8px 0"><b>Similar open report nearby: #${d.id}</b><br><span class="note">${1+d.sup} residents already see this.</span><br><button class="btn s" onclick="supp(${d.id})">I see this too (+1)</button></div>`:'')}
+function setRole(x){role=x;sessionStorage.setItem('role',x);render()}
+const STEPS=[['rep','Citizen reported'],['ai','AI classified'],['asg','Assigned to department'],['acc','Department accepted'],['wrk','Work started'],['res','Resolution uploaded'],['ver','Citizen verification']];
+// ---- Map ----
+function mapSVG(list,ev=true){const roads=`<path d="M0 130H800M0 250H800M0 360H800M120 0V500M300 0V500M470 0V500M620 0V500" stroke="#fff" stroke-width="9" opacity=".8"/><path d="M0 70 C200 110 400 20 800 90" stroke="#9cc4dc" stroke-width="16" fill="none" opacity=".7"/>`;
+ return `<svg class="map" viewBox="0 0 800 500" id="msvg">${roads}${STREETS.map(s=>`<text x="${s[1]-40}" y="${s[2]+75}" font-size="11" fill="#5d6e68" font-family="sans-serif">${s[0]}</text>`).join('')}
+ ${ev?M.map(m=>`<g style="cursor:pointer" onclick="pick('m',${m.id})"><rect x="${m.x-10}" y="${m.y-10}" width="20" height="20" rx="4" transform="rotate(45 ${m.x} ${m.y})" fill="#e07b1a" stroke="#fff" stroke-width="2"/><text x="${m.x}" y="${m.y+4}" text-anchor="middle" font-size="11" fill="#fff">!</text></g>`).join(''):''}
+ ${list.map(r=>`<circle cx="${r.x}" cy="${r.y}" r="${sel=='r'+r.id?13:9}" fill="${mc(r.status)}" stroke="#fff" stroke-width="3" style="cursor:pointer" onclick="pick('r',${r.id})"/>`).join('')}</svg>`}
+function pick(t,id){sel=t+id;const el=$('#pop');if(!el)return;if(t=='m'){const m=M.find(x=>x.id==id);el.innerHTML=`<div class="card pop"><b>${m.t}</b><br>${m.s}<br><span class="note">${m.d} · ${m.w}</span></div>`}else{const r=R.find(x=>x.id==id);el.innerHTML=`<div class="card pop"><b>${CATS[r.cat].l}</b><br>${r.street}<br>${badge(r.status)}<br><span class="note">${DEPTS[r.dept]} · ${rel(r.hist[0].t)}</span><br><button class="btn" style="margin-top:8px" onclick="go('/r/${r.id}')">View Details</button></div>`}$('#mapbox').innerHTML=mapSVG(R)}
+// ---- Views ----
+const V={};
+V['/']=()=>`<section class="hero"><span class="badge" style="background:var(--pr)">Pilot: Zhezkazgan</span><h1 style="margin-top:12px">See a problem. Report it. Track the solution.</h1><p>EcoTrack connects citizens with the organizations responsible for solving city and environmental problems — from the first photo to verified resolution.</p>
+<p style="margin-top:20px"><button class="btn" onclick="go('/report')">Report a Problem</button> <button class="btn s" onclick="go('/map')">Explore City Map</button></p>
+<div class="flow"><span>REPORT</span><em>→</em><span>AI CLASSIFICATION</span><em>→</em><span>AUTOMATIC ROUTING</span><em>→</em><span>ACTION</span><em>→</em><span>PHOTO PROOF</span><em>→</em><span>CITIZEN VERIFICATION</span></div></section>
+<h2>How it works</h2><div class="grid g4">${['Report|Snap a photo and pin the place.','AI routes|A suggested category and responsible department.','Department acts|Accepts, works, posts progress.','Resolution documented|Mandatory “after” photo.','Citizen verifies|Confirm it’s solved — or reopen.'].map((s,i)=>`<div class="card"><b style="color:var(--pr)">${i+1}</b><h3>${s.split('|')[0]}</h3><span class="note">${s.split('|')[1]}</span></div>`).join('')}</div>
+<h2 style="margin-top:28px">Live city map <span class="note">(demo data)</span></h2><div id="mapbox">${mapSVG(R)}</div>
+<div class="card" style="margin-top:20px"><h3>A coordination layer, not a replacement</h3><p style="margin:0;color:var(--mu)">Departments stay responsible for solving problems. EcoTrack gives them structured reports, automatic routing, prioritization, documented resolutions, response-time metrics and hotspot insight — and gives residents transparency and proof.</p></div>`;
+V['/map']=()=>`<h2>City Map</h2><p class="note">🔴 Needs action · 🟡 In progress · 🟢 Resolved · 🟠◆ City works. Demo data.</p><div class="mw"><div id="mapbox">${mapSVG(R)}</div><div id="pop"></div></div>
+<h3 style="margin-top:20px">City activity</h3><div class="grid g2">${M.map(m=>`<div class="card"><b>${m.t}</b><br>${m.s} · ${m.d}<br><span class="note">${m.w}</span></div>`).join('')}</div>`;
+V['/report']=()=>{if(draft&&draft.res)return aiView();return `<h2>Report a Problem</h2><div class="card" style="max-width:620px"><label>Photo</label><input type="file" accept="image/*" id="f" onchange="onFile(this)"><p class="note">No photo handy? <a href="#" onclick="demoPh();return false">Use a demo photo</a></p><div id="pv">${draft&&draft.img?`<img class="ph" src="${draft.img}">`:''}</div>
+<label>Description</label><textarea id="d" rows="3" placeholder="e.g. Pile of household waste next to the road">${draft?.d||''}</textarea>
+<label>Location</label><select id="loc">${STREETS.map((s,i)=>`<option value="${i}">${s[0]}</option>`).join('')}</select><p class="note">GPS can be added in production; demo uses street selection.</p>
+<label>Category (optional)</label><select id="cat"><option value="">Let AI decide</option>${keys.map(k=>`<option value="${k}">${CATS[k].l}</option>`).join('')}</select>
+<p><button class="btn" onclick="analyze()">Analyze with AI</button></p></div>`};
+function onFile(i){const f=i.files[0];if(!f)return;if(!f.type.startsWith('image/')||f.size>8e6)return toast('Please choose an image under 8 MB');const r=new FileReader();r.onload=()=>{draft={...(draft||{}),img:r.result};$('#pv').innerHTML=`<img class="ph" src="${r.result}">`};r.readAsDataURL(f)}
+function demoPh(){draft={...(draft||{}),img:ph('illegal_waste')};$('#pv').innerHTML=`<img class="ph" src="${draft.img}">`;if(!$('#d').value)$('#d').value='Large pile of household waste near the road'}
+async function analyze(){const d=$('#d').value.trim();if(!draft?.img)return toast('Please add a photo');if(d.length<5)return toast('Add a short description');draft.d=d;draft.loc=+$('#loc').value;draft.hint=$('#cat').value;app.innerHTML=`<div class="card" style="text-align:center"><div class="sp"></div>AI is analyzing your photo…</div>`;draft.res=await aiAnalyze(d,draft.hint);render()}
+function aiView(){const a=draft.res;return `<h2>AI Analysis</h2><div class="grid g2"><div class="card"><img class="ph" src="${draft.img}"></div><div class="card ai"><p class="note">AI visual assessment — an automated recommendation, not an official decision. The department may override it.</p>
+<label>Suggested category</label><select onchange="draft.res={...draft.res,cat:this.value,dept:CATS[this.value].d,pri:CATS[this.value].p.toLowerCase(),desc:CATS[this.value].desc};render()">${keys.map(k=>`<option value="${k}" ${k==a.cat?'selected':''}>${CATS[k].l}</option>`).join('')}</select>
+<p><b>Priority:</b> ${pb(a.pri.toUpperCase())}<br><b>Suggested responsible department:</b> ${DEPTS[a.dept]}<br><b>AI confidence:</b> ${Math.round(a.conf*100)}%</p><p>“${a.desc}”</p>
+${dupHtml()}<button class="btn" onclick="submitR()">Submit Report</button> <button class="btn s" onclick="draft.res=null;render()">Back</button></div></div>`}
+function submitR(){const a=draft.res,s=STREETS[draft.loc],id=nid++;const r={id,cat:a.cat,title:CATS[a.cat].l+' near '+s[0],street:s[0],x:s[1]+(id*17%50),y:s[2]+(id*29%40),pri:a.pri.toUpperCase(),status:a.conf<.7?'REVIEW':'NEW',dept:a.dept,conf:a.conf,desc:draft.d,before:draft.img,after:null,note:'',hist:[{k:'rep',t:Date.now()},{k:'ai',t:Date.now()},{k:'asg',t:Date.now()}],mine:true,notes:[],sup:0};R.unshift(r);draft=null;toast(r.status=='REVIEW'?'Low AI confidence — sent to manual triage':'Report submitted and routed to '+DEPTS[r.dept]);go('/r/'+id)}
+V['/dash']=()=>gov()?govDash():citDash();
+function citDash(){const m=R.filter(r=>r.mine),c=s=>m.filter(r=>s.includes(r.status)).length,ver=m.filter(r=>r.status=='VERIFY');
+ return `<h2>Good evening</h2><p class="note" style="margin-top:-8px">What’s happening around you?</p>${ver.length?`<div class="card ai" style="margin-bottom:12px"><b>🔔 ${ver.length} report(s) need your verification</b> — ${ver.map(r=>`<a href="#/r/${r.id}">#${r.id}</a>`).join(', ')}</div>`:''}
+<div class="grid g4">${[['Reports submitted',m.length],['Resolved',c(['RESOLVED'])],['In progress',c(['ASSIGNED','PROGRESS'])],['Reopened',c(['REOPENED'])]].map(x=>`<div class="card stat"><b>${x[1]}</b><span>${x[0]}</span></div>`).join('')}</div>
+<p><button class="btn" onclick="go('/report')">Report a Problem</button> <button class="btn s" onclick="go('/map')">Open City Map</button></p><h3>My reports</h3>${tbl(m)}`}
+function tbl(l,act){return l.length?`<div class="tw card"><table><tr><th>ID</th><th>Category</th><th>Location</th><th>Priority</th><th>Reported</th><th>SLA</th><th>Status</th><th></th></tr>${l.map(r=>`<tr class="k" onclick="go('/r/${r.id}')"><td>#${r.id}</td><td>${CATS[r.cat].l}</td><td>${r.street}</td><td>${pb(r.pri)}</td><td>${rel(r.hist[0].t)}</td><td>${slaTxt(r)}</td><td>${badge(r.status)}</td><td><a href="#/r/${r.id}">Open</a></td></tr>`).join('')}</table></div>`:`<div class="card note">Nothing here yet.</div>`}
+function govDash(){const l=R.filter(r=>gdept=='all'||r.dept==gdept),c=s=>l.filter(r=>s.includes(r.status)).length;const w={HIGH:0,MEDIUM:1,LOW:2};
+ let v=l.filter(r=>flt=='all'||r.status==flt).sort((a,b)=>w[a.pri]-w[b.pri]||b.hist[0].t-a.hist[0].t);
+ return `<h2>Municipal Operations</h2><div class="grid g4" style="margin-bottom:12px"><div class="card"><label style="margin:0">Department</label><select onchange="gdept=this.value;render()"><option value="all">All (admin)</option>${Object.entries(DEPTS).map(([k,n])=>`<option value="${k}" ${k==gdept?'selected':''}>${n}</option>`).join('')}</select></div><div class="card"><label style="margin:0">Status filter</label><select onchange="flt=this.value;render()"><option value="all">All</option>${Object.keys(ST).map(k=>`<option value="${k}" ${k==flt?'selected':''}>${ST[k][0]}</option>`).join('')}</select></div></div>
+<div class="grid g4">${[['New / triage',c(['NEW','REOPENED','REVIEW'])],['In progress',c(['ASSIGNED','PROGRESS'])],['Awaiting verification',c(['VERIFY'])],['Resolved',c(['RESOLVED'])],['Overdue (SLA)',l.filter(over).length]].map(x=>`<div class="card stat"><b>${x[1]}</b><span>${x[0]}</span></div>`).join('')}</div><h3 style="margin-top:20px">Priority reports</h3>${tbl(v)}`}
+V['/analytics']=()=>{const cnt=(f,keys)=>keys.map(k=>[k,R.filter(r=>f(r)==k).length]);const bar=(rows,lab)=>{const mx=Math.max(1,...rows.map(r=>r[1]));return rows.map(r=>`<div>${lab(r[0])} <b>${r[1]}</b><div class="bar" style="width:${r[1]/mx*100}%"></div></div>`).join('')};
+ return `<h2>Analytics</h2><p class="note">⚠ Demo data — not real city statistics. With enough real reports, recurring hotspots and response times guide resource allocation.</p><div class="grid g4"><div class="card stat"><b>31 h</b><span>Avg resolution time (demo)</span></div><div class="card stat"><b>${R.filter(r=>r.pri=='HIGH').length}</b><span>High-priority reports</span></div></div>
+<div class="grid g2" style="margin-top:12px"><div class="card"><h3>By category</h3>${bar(cnt(r=>r.cat,keys),k=>CATS[k].l)}</div><div class="card"><h3>By status</h3>${bar(cnt(r=>r.status,Object.keys(ST)),k=>ST[k][0])}</div>
+<div class="card"><h3>Hotspots</h3>${bar(STREETS.map(s=>[s[0],R.filter(r=>r.street==s[0]).length]),k=>k)}</div><div class="card"><h3>Reports over time (demo)</h3><div style="display:flex;align-items:flex-end;gap:8px;height:120px">${[3,5,4,8,6,9,7].map((v,i)=>`<div style="flex:1;text-align:center;font-size:11px"><div style="height:${v*11}px;background:var(--pr);border-radius:4px 4px 0 0"></div>W${i+1}</div>`).join('')}</div></div></div>
+<div class="card" style="margin-top:12px"><h3>Maintenance events</h3>${gov()?`<div style="display:flex;gap:8px;flex-wrap:wrap"><input type="text" id="me" placeholder="e.g. 🚧 Road repair" style="flex:2;min-width:180px"><select id="ms" style="flex:1;min-width:140px">${STREETS.map((s,i)=>`<option value="${i}">${s[0]}</option>`).join('')}</select><button class="btn" onclick="addM()">Publish to map</button></div>`:'<span class="note">Switch to Government to publish public events.</span>'}</div>`};
+function addM(){const t=$('#me').value.trim();if(!t)return toast('Enter an event title');const s=STREETS[$('#ms').value];M.push({id:M.length,t,x:s[1]+Math.random()*60,y:s[2]+30+Math.random()*30,s:s[0],d:gdept=='all'?'Municipal Services':DEPTS[gdept],w:'Starts today'});toast('Event published on the public map')}
+V['/r/']=id=>{const r=R.find(x=>x.id==id);if(!r)return `<div class="card">Report not found. <a href="#/dash">Back</a></div>`;const done=Object.fromEntries(r.hist.map(h=>[h.k,h]));
+ let act='';if(gov()){if(r.status=='NEW'||r.status=='REOPENED'||r.status=='REVIEW')act=ovrSel(r)+`<button class="btn" onclick="act(${r.id},'acc')">Accept report</button> <button class="btn d" onclick="act(${r.id},'rej')">Reject (wrong department)</button>`;
+ else if(r.status=='ASSIGNED')act=`<button class="btn" onclick="act(${r.id},'wrk')">Start work → In Progress</button>`;
+ else if(r.status=='PROGRESS')act=`<label>After photo</label><input type="file" accept="image/*" id="af"> <a href="#" onclick="act(${r.id},'res',1);return false" class="note">use demo photo</a><label>Resolution note</label><textarea id="rn" rows="2">Accumulated issue was resolved and the area restored.</textarea><p><button class="btn" onclick="act(${r.id},'res')">Mark as Resolved</button></p>`;
+ if(r.status=='VERIFY')act+=`<button class="btn s" onclick="act(${r.id},'cls')">Simulate 7 days without citizen reply</button>`;act+=`<label>Internal note</label><div style="display:flex;gap:6px"><input type="text" id="in" placeholder="Visible to department only"><button class="btn s" onclick="act(${r.id},'note')">Add</button></div>${r.notes.map(n=>`<p class="note">🔒 ${n}</p>`).join('')}`}
+ else if(r.status=='VERIFY')act=`<div class="card ai"><b>Has this problem actually been solved?</b><p><button class="btn" onclick="act(${r.id},'ver')">YES — Problem Solved</button></p><label>Still broken? Add a photo (optional)</label><input type="file" accept="image/*"><p><button class="btn d" onclick="act(${r.id},'reo')">NO — Reopen Report</button></p></div>`;
+ if(!gov()&&!r.mine&&open(r))act+=`<button class="btn s" onclick="supp(${r.id})">I see this too (+1)</button>`;return `<p><a href="#/dash">← Back</a></p><div class="grid g2"><div><h2>Report #${r.id}</h2><h3>${r.title}</h3><p>${badge(r.status)} ${pb(r.pri)}</p><div class="card"><p style="margin:0"><b>Category:</b> ${CATS[r.cat].l}<br><b>Responsible department:</b> ${DEPTS[r.dept]}<br><b>Location:</b> ${r.street}<br><b>Reported:</b> ${fmt(r.hist[0].t)}<br><b>AI suggestion:</b> ${Math.round(r.conf*100)}% confidence<br><b>Residents affected:</b> ${1+(r.sup||0)}<br><b>SLA:</b> ${slaTxt(r)}<br><span class="note">${r.desc}</span></p></div>
+ <h3 style="margin-top:16px">Before / After</h3><div class="ba"><div><b>BEFORE</b><img src="${r.before}"></div><div><b>AFTER</b>${r.after?`<img src="${r.after}">`:'<div class="ph card note" style="display:grid;place-items:center">Awaiting proof</div>'}</div></div>${r.note?`<p class="note">Department note: “${r.note}”</p>`:''}</div>
+ <div><div class="card"><h3>Timeline</h3><ul class="tl">${STEPS.map(([k,n])=>`<li class="${done[k]?'d':''}">${n}<small>${done[k]?fmt(done[k].t):'Pending'}</small></li>`).join('')}${done.reo?`<li class="d">Reopened by citizen<small>${fmt(done.reo.t)}</small></li>`:''}${done.cls?`<li class="d">Closed — no citizen confirmation in 7 days<small>${fmt(done.cls.t)}</small></li>`:''}</ul></div>${act?`<div class="card" style="margin-top:12px">${act}</div>`:''}</div></div>`};
+function act(id,a,demo){const r=R.find(x=>x.id==id);
+ if(a=='acc'){r.status='ASSIGNED';push(r,'acc');toast('Accepted')}
+ else if(a=='rej'){r.dept='muni';r.status='NEW';push(r,'asg');toast('Returned to Municipal Services for re-routing')}
+ else if(a=='wrk'){r.status='PROGRESS';push(r,'wrk');toast('In progress — marker is now yellow on the map')}
+ else if(a=='note'){const v=$('#in').value.trim();if(!v)return;r.notes.push(v)}
+ else if(a=='res'){const f=$('#af')?.files[0],n=$('#rn').value.trim();if(!f&&!demo)return toast('Upload an “after” photo first');const fin=url=>{r.after=url;r.note=n;r.status='VERIFY';push(r,'res');toast('Marked resolved — citizen notified');render()};if(f){const fr=new FileReader();fr.onload=()=>fin(fr.result);fr.readAsDataURL(f);return}fin(ph(r.cat,1));return}
+ else if(a=='cls'){r.status='CLOSED';push(r,'cls');toast('Auto-closed: not confirmed by citizen (not counted as verified)')}else if(a=='ver'){r.status='RESOLVED';push(r,'ver');toast('Thank you — report verified & resolved')}
+ else if(a=='reo'){r.status='REOPENED';push(r,'reo');toast('Report reopened')}
+ render()}
+// ---- Router ----
+function render(){const h=location.hash.slice(1)||'/';const nv=[['/','Home'],['/map','Map'],['/dash',gov()?'Operations':'My Reports'],['/report','Report']].concat(gov()?[['/analytics','Analytics']]:[]);
+ $('#nav').innerHTML=nv.map(n=>`<a href="#${n[0]}" class="${h==n[0]?'on':''}">${n[1]}</a>`).join('');
+ $('#seg').innerHTML=`<button class="${!gov()?'on':''}" onclick="setRole('citizen')">Citizen</button><button class="${gov()?'on':''}" onclick="setRole('gov')">Government</button>`;
+ try{if(h.startsWith('/r/'))app.innerHTML=V['/r/'](+h.slice(3));else if(V[h]){if(h=='/analytics'&&!gov())return go('/dash');app.innerHTML=V[h]()}else app.innerHTML=`<div class="card">Page not found. <a href="#/">Home</a></div>`}catch(e){app.innerHTML=`<div class="card">Something went wrong. <a href="#/">Home</a></div>`;console.error(e)}
+ window.scrollTo(0,0)}
+addEventListener('hashchange',render);render();
+</script></body></html>

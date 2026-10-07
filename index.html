@@ -939,6 +939,16 @@ function sendQuickChat(txt) {
   sendChatMessage();
 }
 
+function formatAiResponse(txt) {
+  if (!txt) return '';
+  return txt
+    .replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
+    .replace(/\*(.*?)\*/g, '<i>$1</i>')
+    .replace(/`(.*?)`/g, '<code>$1</code>')
+    .replace(/\n\n/g, '<br><br>')
+    .replace(/\n/g, '<br>');
+}
+
 async function sendChatMessage() {
   const input = $('#chat-input');
   const txt = input.value.trim();
@@ -950,44 +960,103 @@ async function sendChatMessage() {
   msgs.scrollTop = msgs.scrollHeight;
 
   const botMsgId = 'bot-' + Date.now();
-  msgs.innerHTML += `<div class="chat-msg bot" id="${botMsgId}">⏳ Groq ИИ отвечает...</div>`;
+  msgs.innerHTML += `<div class="chat-msg bot" id="${botMsgId}">⏳ Groq ИИ обрабатывает запрос...</div>`;
   msgs.scrollTop = msgs.scrollHeight;
 
-  const unrestrictedPrompt = `
- Ты — умный, дружелюбный универсальный ИИ-Консультант платформы EcoTrack на базе Groq AI (модель openai/gpt-oss-120b).
- У ТЕБЯ ПОЛНЫЙ ДОСТУП: Отвечай на ЛЮБЫЕ вопросы пользователя без искусственных ограничений (про Жезказган, закрытые дороги, советы по жизни, программирование, учеба, наука, быт).
- Отвечай грамотно, вежливо и информативно на русском или казахском языке.
- `;
+  const activeAlertsText = M.map(m => `- ${m.t} | Адрес: ${m.s} | Сроки: ${m.w} | Служба: ${m.d} | Описание: ${m.desc}`).join('\n');
+  const activeReportsText = R.slice(0, 5).map(r => `- #${r.id} ${r.title} (${STATUSES[r.status].l}): ${r.street}`).join('\n');
 
-  try {
-    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${groqApiKey}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        model: 'openai/gpt-oss-120b',
-        messages: [
-          { role: 'system', content: unrestrictedPrompt },
-          { role: 'user', content: txt }
-        ],
-        max_tokens: 400
-      })
-    });
+  const systemPrompt = `
+Ты — официальный умный ИИ-Консультант платформы EcoTrack по городу Жезказган на базе Groq AI.
+У ТЕБЯ ПОЛНЫЙ ДОСТУП Ко всей оперативной информации города Жезказган!
 
-    if (response.ok) {
-      const data = await response.json();
-      const reply = data.choices[0].message.content;
-      $(`#${botMsgId}`).innerHTML = reply.replace(/\n/g, '<br>');
-      msgs.scrollTop = msgs.scrollHeight;
-      return;
+АКТУАЛЬНАЯ СВОДКА И РЕМОНТНЫЕ РАБОТЫ В ЖЕЗКАЗГАНЕ:
+${activeAlertsText}
+
+АКТИВНЫЕ ОБРАЩЕНИЯ ЖИТЕЛЕЙ:
+${activeReportsText}
+
+КОНТАКТЫ ЭКСТРЕННЫХ И КОММУНАЛЬНЫХ СЛУЖБ ЖЕЗКАЗГАНА:
+- Единый контакт-центр Акимата / Служба 109: 109
+- Водоканал КГП "Таза Су" (Аварийная): 109 / +7 (7102) 72-11-22
+- Электросеть ГКП "Жезказган Энерго": 109 / +7 (7102) 74-33-11
+- Скорая помощь: 103, Полиция: 102, Пожарная: 101, Газ: 104
+
+ИНСТРУКЦИЯ ПО ОТВЕТАМ:
+1. Отвечай дружелюбно, вежливо и точно на русском или казахском языке.
+2. Если вопрос касается перекрытия дорог, ремонта, отключений воды или света в Жезказгане, ДАВАЙ ТОЧНУЮ ИНФОРМАЦИЮ из сводки выше.
+3. Если пользователь задает абстрактный, научный, бытовой или образовательный вопрос, давай развернутый и полезный ответ без ограничений.
+`;
+
+  const availableModels = ['openai/gpt-oss-120b', 'qwen/qwen3.8-27b', 'openai/gpt-oss-20b', 'allam-2-7b'];
+
+  for (const modelName of availableModels) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${groqApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        signal: controller.signal,
+        body: JSON.stringify({
+          model: modelName,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: txt }
+          ],
+          max_tokens: 600,
+          temperature: 0.7
+        })
+      });
+      clearTimeout(timeoutId);
+
+      if (response.ok) {
+        const data = await response.json();
+        const reply = data.choices[0].message.content;
+        $(`#${botMsgId}`).innerHTML = formatAiResponse(reply);
+        msgs.scrollTop = msgs.scrollHeight;
+        return;
+      }
+    } catch (err) {
+      console.warn(`Groq Model ${modelName} attempt failed:`, err);
     }
-  } catch (err) {
-    console.warn('Groq Chat Error:', err);
   }
 
-  $(`#${botMsgId}`).innerHTML = 'Ответ по Жезказгану: По вопросам коммунальных аварий звоните в 109.';
+  // Smart Offline Fallback using live M and R data
+  let offlineReply = `<b>🤖 Оперативный ответ ИИ по Жезказгану:</b><br><br>`;
+  const lowerTxt = txt.toLowerCase();
+  
+  if (lowerTxt.includes('дорог') || lowerTxt.includes('ремонт') || lowerTxt.includes('проезд') || lowerTxt.includes('закрыт')) {
+    const roadEvents = M.filter(m => m.type === 'road' || m.t.includes('Ремонт') || m.t.includes('Перекрыто'));
+    offlineReply += `<b>🚧 Информация о ремонте и перекрытиях дорог:</b><br>`;
+    roadEvents.forEach(r => {
+      offlineReply += `• <b>${r.t}</b>: ${r.s} (${r.w}). ${r.desc}<br>`;
+    });
+  } else if (lowerTxt.includes('вод') || lowerTxt.includes('таза су')) {
+    const waterEvents = M.filter(m => m.type === 'water' || m.t.includes('водоснабжения'));
+    offlineReply += `<b>💧 Отключения водоснабжения (КГП Таза Су):</b><br>`;
+    waterEvents.forEach(w => {
+      offlineReply += `• <b>${w.t}</b>: ${w.s} (${w.w}). ${w.desc}<br>`;
+    });
+  } else if (lowerTxt.includes('свет') || lowerTxt.includes('электр') || lowerTxt.includes('энерго')) {
+    const lightEvents = M.filter(m => m.type === 'light' || m.t.includes('электроэнерги'));
+    offlineReply += `<b>⚡ Плановые отключения электроэнергии (ГКП Жезказган Энерго):</b><br>`;
+    lightEvents.forEach(l => {
+      offlineReply += `• <b>${l.t}</b>: ${l.s} (${l.w}). ${l.desc}<br>`;
+    });
+  } else {
+    offlineReply += `Сводка актуальных работ в Жезказгане:<br>`;
+    M.forEach(m => {
+      offlineReply += `• <b>${m.t}</b> — ${m.s} (${m.w})<br>`;
+    });
+    offlineReply += `<br><i>По вопросам коммунальных аварий обращайтесь в Единый контакт-центр Акимата по номеру <b>109</b>.</i>`;
+  }
+
+  $(`#${botMsgId}`).innerHTML = offlineReply;
   msgs.scrollTop = msgs.scrollHeight;
 }
 
